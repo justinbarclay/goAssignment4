@@ -14,6 +14,7 @@ import re
 from feature import Feature
 
 class GtpConnection():
+
     def __init__(self, go_engine, debug_mode = False):
         """
         Play Go over a GTP connection

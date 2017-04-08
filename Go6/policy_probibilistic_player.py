@@ -33,6 +33,8 @@ def createPolicyPlayer():
     con = GtpConnection(PolicyPlayer())
     con.start_connection()
 
+# Code given to us in prob_select.py
+# downloaded from https://webdocs.cs.ualberta.ca/~mmueller/courses/496-Winter-2017/assignments/a4.html on April 8, 2017
 # probabilities should add up to 1
 def verify_weights(distribution):
     epsilon = 0.000000001 # allow small numerical error
