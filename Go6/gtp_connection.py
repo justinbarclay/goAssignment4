@@ -312,13 +312,24 @@ class GtpConnection():
         """
             Return list of policy moves for the current_player of the board
         """
-        policy_moves, type_of_move = GoBoardUtil.generate_all_policy_moves(self.board,
-                                                self.go_engine.pattern,
-                                                self.go_engine.selfatari)
+        # policy_moves, type_of_move = GoBoardUtil.generate_all_policy_moves(self.board,
+        #                                         self.go_engine.pattern,
+        #                                         self.go_engine.selfatari)
+
+        policy_moves = GoBoardUtil.generate_all_policy_moves(self.board, self.go_engine.pattern, self.go_engine.selfatari)
+
+        # if len(policy_moves) == 0:
+        #     self.respond("Pass")
+        # else:
+        #     response = type_of_move + " " + GoBoardUtil.sorted_point_string(policy_moves, self.board.NS)
+        #     self.respond(response)
+
         if len(policy_moves) == 0:
             self.respond("Pass")
         else:
-            response = type_of_move + " " + GoBoardUtil.sorted_point_string(policy_moves, self.board.NS)
+            response = ""
+            for move, prob in policy_moves:
+                response += self.board.point_to_string(move) + " " + str(prob) + " "
             self.respond(response)
 
     def random_moves_cmd(self, args):

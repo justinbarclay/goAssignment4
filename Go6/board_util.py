@@ -113,7 +113,6 @@ class GoBoardUtil(object):
         parent = mcts.TreeNode(None, False)
         parent.expand(board, color)
         children = parent._children
-        print(children)
         return GoBoardUtil.extract_probabilities(children)
 
     @staticmethod
