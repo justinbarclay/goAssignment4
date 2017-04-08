@@ -120,7 +120,7 @@ class GoBoardUtil(object):
         probabilities = []
         for key, value in children.items():
             probabilities.append((key, value._prob_simple_feature))
-        return sorted(probabilities, key=lambda x: x[1])
+        return sorted(probabilities, key=lambda x: x[1], reverse=True)
         
     @staticmethod
     def generate_random_moves(board):

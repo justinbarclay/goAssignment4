@@ -62,9 +62,10 @@ class TreeNode(object):
         # Normalize to get probability
         if len(Features_weight) != 0 and gammas_sum != 0.0:
             for move in moves:
-                if move not in self._children:
+                if move in self._children:
                     if board.check_legal(move, color) and not board.is_eye(move, color):
                         self._children[move]._prob_simple_feature = self._children[move]._prob_simple_feature / gammas_sum
+        
         self._expanded = True
         
     def expand_with_pass(self, board, color):
