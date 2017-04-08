@@ -317,6 +317,12 @@ class GtpConnection():
         #                                         self.go_engine.selfatari)
 
         policy_moves = GoBoardUtil.generate_all_policy_moves(self.board, self.go_engine.pattern, self.go_engine.selfatari)
+        # alphaList = []
+        
+        # for move, val in policy_moves:
+        #     alphaList.append((self.board.point_to_string(move), val))
+
+        # policy_moves = sorted(alphaList, key=lambda x: x[0])
 
         # if len(policy_moves) == 0:
         #     self.respond("Pass")
