@@ -24,7 +24,7 @@ class TreeNode(object):
     """
     version = 0.1
     name = "MCTS Player"
-    def __init__(self, parent):
+    def __init__(self, parent, includePass=True):
         """
         parent is set when a node gets expanded
         """
@@ -35,8 +35,39 @@ class TreeNode(object):
         self._expanded = False
         self._move = None
         self._prob_simple_feature = 1.0
+        self.includePass = includePass
 
     def expand(self, board, color):
+        if self.includePass:
+            return self.expand_with_pass(board, color)
+        else:
+            return self.expand_without_pass(board, color)
+    def expand_without_pass(self, board, color):
+        """Expands tree by creating new children.
+        """
+        gammas_sum = 0.0
+        moves = board.get_empty_points()
+        all_board_features = Feature.find_all_features(board)
+        for move in moves:
+            if move not in self._children:
+                if board.check_legal(move, color) and not board.is_eye(move, color):
+                    self._children[move] = TreeNode(self)
+                    self._children[move]._move = move
+                    if len(Features_weight) != 0:
+                        # when we have features weight, use that to compute knowledge (gamma) of each move
+                        assert move in all_board_features
+                        self._children[move]._prob_simple_feature = Feature.compute_move_gamma(Features_weight, all_board_features[move])
+                        gammas_sum += self._children[move]._prob_simple_feature
+        
+        # Normalize to get probability
+        if len(Features_weight) != 0 and gammas_sum != 0.0:
+            for move in moves:
+                if move not in self._children:
+                    if board.check_legal(move, color) and not board.is_eye(move, color):
+                        self._children[move]._prob_simple_feature = self._children[move]._prob_simple_feature / gammas_sum
+        self._expanded = True
+        
+    def expand_with_pass(self, board, color):
         """Expands tree by creating new children.
         """
         gammas_sum = 0.0

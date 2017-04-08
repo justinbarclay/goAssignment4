@@ -4,6 +4,7 @@ WHITE = 2
 BORDER = 3
 FLOODFILL = 4
 import numpy as np
+import mcts
 from pattern import pat3set
 import sys
 import random
@@ -94,16 +95,34 @@ class GoBoardUtil(object):
             Use in UI only. For playing, use generate_move_with_filter
             which is more efficient
         """
-        atari_moves,msg = GoBoardUtil.generate_atari_moves(board)
-        atari_moves = GoBoardUtil.filter_moves(board, atari_moves, check_selfatari)
-        if len(atari_moves) > 0:
-            return atari_moves, msg
-        pattern_moves = GoBoardUtil.generate_pattern_moves(board)
-        pattern_moves = GoBoardUtil.filter_moves(board, pattern_moves, check_selfatari)
-        if len(pattern_moves) > 0:
-            return pattern_moves, "Pattern"
-        return GoBoardUtil.generate_random_moves(board), "Random"
+        # atari_moves,msg = GoBoardUtil.generate_atari_moves(board)
+        # atari_moves = GoBoardUtil.filter_moves(board, atari_moves, check_selfatari)
 
+        # policy_moves = GoBoardUtil.probabilistic_policy(board)
+        # if len(atari_moves) > 0:
+        #     return atari_moves, msg
+        # pattern_moves = GoBoardUtil.generate_pattern_moves(board)
+        # pattern_moves = GoBoardUtil.filter_moves(board, pattern_moves, check_selfatari)
+        # if len(pattern_moves) > 0:
+        #     return pattern_moves, "Pattern"
+        # return GoBoardUtil.generate_random_moves(board), "Random"
+        return GoBoardUtil.probabilistic_policy(board, board.current_player)
+    
+    @staticmethod
+    def probabilistic_policy(board, color):
+        parent = mcts.TreeNode(None, False)
+        parent.expand(board, color)
+        children = parent._children
+        print(children)
+        return GoBoardUtil.extract_probabilities(children)
+
+    @staticmethod
+    def extract_probabilities(children):
+        probabilities = []
+        for key, value in children.items():
+            probabilities.append((key, value._prob_simple_feature))
+        return sorted(probabilities, key=lambda x: x[1])
+        
     @staticmethod
     def generate_random_moves(board):
         empty_points = board.get_empty_points()
@@ -225,6 +244,7 @@ class GoBoardUtil(object):
         moves,_ = GoBoardUtil.generate_atari_moves(board)
         move = GoBoardUtil.filter_moves_and_generate(board, moves, 
                                                   check_selfatari)
+
         if move:
             return move
         if use_pattern:
@@ -236,6 +256,7 @@ class GoBoardUtil(object):
         return move 
     
     @staticmethod
+        
     def selfatari(board, move, color):
         max_old_liberty = GoBoardUtil.blocks_max_liberty(board, move, color, 2)
         if max_old_liberty > 2:

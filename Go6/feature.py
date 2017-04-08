@@ -290,7 +290,3 @@ class Feature(object):
         for f in features:
             gamma = gamma * features_weight[f]
         return gamma
-            
-
-
-
