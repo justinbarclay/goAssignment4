@@ -4,7 +4,7 @@ WHITE = 2
 BORDER = 3
 FLOODFILL = 4
 import numpy as np
-import mcts
+from treenode import TreeNode
 from pattern import pat3set
 import sys
 import random
