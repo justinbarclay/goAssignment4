@@ -4,7 +4,6 @@ WHITE = 2
 BORDER = 3
 FLOODFILL = 4
 import numpy as np
-from treenode import TreeNode
 from pattern import pat3set
 import sys
 import random
@@ -110,6 +109,7 @@ class GoBoardUtil(object):
     
     @staticmethod
     def probabilistic_policy(board, color):
+        import mcts
         parent = mcts.TreeNode(None, False)
         parent.expand(board, color)
         children = parent._children
