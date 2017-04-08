@@ -19,15 +19,18 @@ class PolicyPlayer(object):
 
         moves_with_max = []
         max_prob = moves[0][1]
-        moves_with_max.append(moves[0][0])
 
         for move, val in moves:
             if val == max_prob:
-                moves_with_max.append(move)
+                moves_with_max.append((move,val))
             else:
                 break
+        
+        alphaList = []
+        for move, val in moves_with_max:
+            alphaList.append((board.point_to_string(move), move))
 
-        return sorted(moves_with_max, key=lambda x: x)[0]
+        return sorted(alphaList, key=lambda x: x[0])[0][1]
 
     def get_properties(self):
         return dict(
