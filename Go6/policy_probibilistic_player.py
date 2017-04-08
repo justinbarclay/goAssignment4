@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from board_util import GoBoardUtil
 from gtp_connection import GtpConnection
+import random
 
 class PolicyPlayer(object):
     """
@@ -14,10 +15,11 @@ class PolicyPlayer(object):
         pass
 
     def get_move(self, board, toplay):
-        moves = GoBoardUtil.generate_move_with_filter(board, True, True)
+        moves = GoBoardUtil.probabilistic_policy(board, toplay)
+        print(moves)
         verify_weights(moves)
-        
-        return random_select(moves) 
+
+        return random_select(moves)[0]
 
     def get_properties(self):
         return dict(
