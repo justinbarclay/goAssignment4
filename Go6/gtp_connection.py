@@ -477,7 +477,7 @@ class GtpConnection():
             color = GoBoardUtil.color_to_int(board_color)
             self.debug_msg("Board:\n{}\nko: {}\n".format(str(self.board.get_twoD_board()),
                                                           self.board.ko_constraint))
-            move = self.go_engine.get_move(self.board, color)
+            move = GoBoardUtil.probabilistic_policy(self.board, color)[0][0]
             if move is None:
                 self.respond("pass")
                 return
