@@ -106,9 +106,9 @@ class GoBoardUtil(object):
         #     return pattern_moves, "Pattern"
         # return GoBoardUtil.generate_random_moves(board), "Random"
         probabilities = GoBoardUtil.probabilistic_policy(board, board.current_player)
-        if len(probabilities) > 0:
-            return probabilities
-        return [('pass', 1.00000)]
+        # if len(probabilities) > 0:
+        return probabilities
+#        return [('pass', 1.00000)]
     
     @staticmethod
     def probabilistic_policy(board, color):
@@ -122,7 +122,7 @@ class GoBoardUtil(object):
     def extract_probabilities(children):
         probabilities = []
         for key, value in children.items():
-            probabilities.append((key, round(value._prob_simple_feature, 5)))
+            probabilities.append((key, value._prob_simple_feature))
         return sorted(probabilities, key=lambda x: x[1], reverse=True)
         
     @staticmethod

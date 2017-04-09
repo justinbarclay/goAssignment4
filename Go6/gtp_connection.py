@@ -331,11 +331,12 @@ class GtpConnection():
         #     self.respond(response)
 
         if len(policy_moves) == 0:
-            self.respond("Pass")
+            self.respond("pass 1.00000")
         else:
             response = ""
             for move, prob in policy_moves:
-                response += self.board.point_to_string(move) + " " + str(prob) + " "
+                probability = "{0:.5f}".format(prob)
+                response += self.board.point_to_string(move) + " " + probability  + " "
             self.respond(response)
 
     def random_moves_cmd(self, args):
