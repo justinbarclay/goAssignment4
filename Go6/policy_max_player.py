@@ -38,9 +38,12 @@ class PolicyPlayer(object):
             name=self.__class__.__name__,
         )
 
-    def reset(self):
-        return
+    def update(self, move):
+        pass
 
+    def reset(self):
+        pass
+        
 def createPolicyPlayer():
     con = GtpConnection(PolicyPlayer())
     con.start_connection()
