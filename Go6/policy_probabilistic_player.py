@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-from board_util import GoBoardUtil
 from mcts import MCTS
 from gtp_connection import GtpConnection
 import argparse
@@ -34,45 +33,50 @@ class Go6Player():
         return GoBoardUtil.generate_move_with_filter(board,pattern,check_selfatari)
 
     def run(self, board, color, print_info=False):
-        # self.MCTS.exploration = self.exploration
-        # self.MCTS.limit = self.limit
-        # self.MCTS.toplay = color
-        # self.MCTS.pattern = True
-        # self.MCTS.selfatari = True
+        self.MCTS.exploration = self.exploration
+        self.MCTS.limit = self.limit
+        self.MCTS.toplay = color
+        self.MCTS.pattern = True
+        self.MCTS.selfatari = True
 
-        # for n in range(self.num_simulation):
-        #     board_copy = board.copy()
-        #     self.MCTS._playout(board_copy, color)
+        for n in range(self.num_simulation):
+            board_copy = board.copy()
+            self.MCTS._playout(board_copy, color)
 
-        # if print_info:
-        #     self.MCTS.good_print(board, self.MCTS._root, color,self.num_nodes)
-        pass
+        if print_info:
+            self.MCTS.good_print(board, self.MCTS._root, color,self.num_nodes)
     
     def reset(self):
-        # self.MCTS = MCTS()
-        pass
+        self.MCTS = MCTS()
 
     def update(self, move):
-        # self.MCTS.update_with_move(move)
-        pass
+        self.MCTS.update_with_move(move)
 
     def get_move(self, board, toplay):
         moves = GoBoardUtil.probabilistic_policy(board, toplay)
+        verify_weights(moves)
 
-        moves_with_max = []
-        max_prob = moves[0][1]
+        return random_select(moves)[0]
 
-        for move, val in moves:
-            if val == max_prob:
-                moves_with_max.append((move,val))
-            else:
-                break
-        
-        alphaList = []
-        for move, val in moves_with_max:
-            alphaList.append((board.point_to_string(move), move))
+# Code given to us in prob_select.py
+# downloaded from https://webdocs.cs.ualberta.ca/~mmueller/courses/496-Winter-2017/assignments/a4.html on April 8, 2017
+# probabilities should add up to 1
+def verify_weights(distribution):
+    epsilon = 0.000000001 # allow small numerical error
+    sum = 0.0
+    for item in distribution:
+        sum += item[1]
+    assert abs(sum - 1.0) < epsilon
 
-        return sorted(alphaList, key=lambda x: x[0])[0][1]
+# This method is slow but simple
+def random_select(distribution):
+    r = random.random();
+    sum = 0.0
+    for item in distribution:
+        sum += item[1]
+        if sum > r:
+            return item
+    return distribution[-1] # some numerical error, return last element
 
 if __name__=='__main__':
     c = GtpConnection(Go6Player(num_simulation))
