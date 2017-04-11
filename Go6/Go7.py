@@ -34,25 +34,26 @@ class Go6Player():
         return GoBoardUtil.generate_move_with_filter(board,pattern,check_selfatari)
 
     def run(self, board, color, print_info=False):
-        self.MCTS.exploration = self.exploration
-        self.MCTS.limit = self.limit
-        self.MCTS.toplay = color
-        self.MCTS.pattern = True
-        self.MCTS.selfatari = True
+        # self.MCTS.exploration = self.exploration
+        # self.MCTS.limit = self.limit
+        # self.MCTS.toplay = color
+        # self.MCTS.pattern = True
+        # self.MCTS.selfatari = True
 
-        for n in range(self.num_simulation):
-            board_copy = board.copy()
-            self.MCTS._playout(board_copy, color)
+        # for n in range(self.num_simulation):
+        #     board_copy = board.copy()
+        #     self.MCTS._playout(board_copy, color)
 
-        if print_info:
-            self.MCTS.good_print(board, self.MCTS._root, color,self.num_nodes)
+        # if print_info:
+        #     self.MCTS.good_print(board, self.MCTS._root, color,self.num_nodes)
+        pass
     
     def reset(self):
-        self.MCTS = MCTS()
+        # self.MCTS = MCTS()
         pass
 
     def update(self, move):
-        self.MCTS.update_with_move(move)
+        # self.MCTS.update_with_move(move)
         pass
 
     def get_move(self, board, toplay):
