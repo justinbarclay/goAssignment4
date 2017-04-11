@@ -16,7 +16,6 @@ class PolicyPlayer(object):
 
     def get_move(self, board, toplay):
         moves = GoBoardUtil.probabilistic_policy(board, toplay)
-        print(moves)
         verify_weights(moves)
 
         return random_select(moves)[0]
@@ -26,6 +25,10 @@ class PolicyPlayer(object):
             version=self.version,
             name=self.__class__.__name__,
         )
+
+    def update(self, move):
+        pass
+
     def reset(self):
         pass
 

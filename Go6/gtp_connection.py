@@ -455,7 +455,7 @@ class GtpConnection():
             if args[1].lower()=='pass':
                 self.debug_msg("Player {} is passing\n".format(args[0]))
                 self.go_engine.update('pass')
-                #self.board.current_player = GoBoardUtil.opponent(color)
+                # self.board.current_player = GoBoardUtil.opponent(color)
                 self.board.move(None, color)
                 self.respond()
                 return
